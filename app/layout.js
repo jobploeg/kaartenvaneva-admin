@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "../components/ui/dropdown-menu";
 import { Button } from "../components/ui/button";
+import { Toaster } from "react-hot-toast";
 
 export const metadata = {
   title: "admin - kaartenvaneva ",
@@ -46,9 +47,7 @@ export default function RootLayout({ children }) {
           </div>
           <div className="block md:hidden">
             <DropdownMenu>
-              <Button>
-                <DropdownMenuTrigger>Menu</DropdownMenuTrigger>
-              </Button>
+              <DropdownMenuTrigger>Menu</DropdownMenuTrigger>
               <DropdownMenuContent className="mx-5 mt-2 p-5">
                 <Link href={"/bestellingen"}>
                   <DropdownMenuItem>Bestellingen</DropdownMenuItem>
@@ -63,7 +62,10 @@ export default function RootLayout({ children }) {
             </DropdownMenu>
           </div>
         </header>
-        <main>{children}</main>
+        <main>
+          {children}
+          <Toaster />.
+        </main>
       </body>
     </html>
   );

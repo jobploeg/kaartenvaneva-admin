@@ -43,7 +43,7 @@ export const columns: ColumnDef<Products>[] = [
       return (
         <div className="pl-3">
           <Link href={`/producten/${row.original.id}`}>
-            <p className="hover:font-medium">{row.original.title}</p>
+            <p>{row.original.title}</p>
           </Link>
         </div>
       );
@@ -67,7 +67,7 @@ export const columns: ColumnDef<Products>[] = [
       return (
         <div className="pl-3">
           <Link href={`/dashboard/producten/${row.original.id}`}>
-            <p className="hover:font-medium">{row.original.categories.name}</p>
+            <p>{row.original.categories.name}</p>
           </Link>
         </div>
       );
@@ -97,7 +97,7 @@ export const columns: ColumnDef<Products>[] = [
       return (
         <div>
           <Link href={`/producten/${row.original.id}`}>
-            <p className="hover:font-medium">{formatted}</p>
+            <p>{formatted}</p>
           </Link>
         </div>
       );

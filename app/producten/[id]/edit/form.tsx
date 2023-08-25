@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
-import { supabase } from "../../../lib/supabaseClient";
+import { supabase } from "../../../../lib/supabaseClient";
 import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
 
@@ -13,9 +13,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../../components/ui/select";
-import { Button } from "../../../components/ui/button";
-import { Textarea } from "../../../components/ui/textarea";
+} from "../../../../components/ui/select";
+import { Button } from "../../../../components/ui/button";
+import { Textarea } from "../../../../components/ui/textarea";
 import {
   Form,
   FormControl,
@@ -23,8 +23,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../../../components/ui/form";
-import { Input } from "../../../components/ui/input";
+} from "../../../../components/ui/form";
+import { Input } from "../../../../components/ui/input";
 import { Key, useState } from "react";
 
 const formSchema = z.object({
@@ -38,7 +38,7 @@ const formSchema = z.object({
   }, "Price must be a number"),
 });
 
-export default function ProfileForm({ categories }) {
+export default function ProfileForm({ categories, product }) {
   const [pictures, setPictures] = useState<any>([
     {
       data: [],
@@ -88,10 +88,10 @@ export default function ProfileForm({ categories }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      price: "",
-      category: "",
+      title: product[0].title,
+      description: product[0].description,
+      price: product[0].price,
+      category: product[0].category.categories,
       images: "",
     },
   });
@@ -114,10 +114,11 @@ export default function ProfileForm({ categories }) {
         "Er is een probleem met het toevoegen van het product. Probeer het later opnieuw."
       );
     } else {
-      toast.success("Product toegevoegd!");
+      toast.success("Product geupdated!");
       form.reset();
     }
   }
+  console.log(categories);
 
   return (
     <Form {...form}>
@@ -132,7 +133,7 @@ export default function ProfileForm({ categories }) {
             <FormItem>
               <FormLabel>Titel</FormLabel>
               <FormControl>
-                <Input placeholder="Titel" required {...field} />
+                <Input required {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -211,7 +212,7 @@ export default function ProfileForm({ categories }) {
           )}
         />
 
-        <Button type="submit">Toevoegen</Button>
+        <Button type="submit">Update</Button>
       </form>
       {/* <ToastContainer /> */}
     </Form>

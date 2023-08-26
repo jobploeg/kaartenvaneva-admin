@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { supabase } from "../../../lib/supabaseClient";
 import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
+import { cn } from "../../../lib/utils";
 
 import {
   Select,
@@ -14,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../components/ui/select";
-import { Button } from "../../../components/ui/button";
+import { Button, buttonVariants } from "../../../components/ui/button";
 import { Textarea } from "../../../components/ui/textarea";
 import {
   Form,
@@ -170,22 +171,21 @@ export default function ProfileForm({ categories }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Categorie</FormLabel>
+              <br />
               <FormControl>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
+                <select
+                  className={cn(
+                    buttonVariants({ variant: "outline" }),
+                    "w-[200px] appearance-none bg-transparent font-normal"
+                  )}
+                  {...field}
                 >
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder={field.value} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map((category: { id: any; name: string }) => (
-                      <SelectItem key={category.id} value={category.id}>
-                        {category.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  {categories.map((category: { id: any; name: string }) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
               </FormControl>
               <FormMessage />
             </FormItem>

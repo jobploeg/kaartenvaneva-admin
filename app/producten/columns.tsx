@@ -15,6 +15,18 @@ import {
   DropdownMenuTrigger,
 } from "../../components/ui/dropdown-menu";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../../components/ui/alert-dialog";
+
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Products = {
@@ -133,7 +145,28 @@ export const columns: ColumnDef<Products>[] = [
 
               <DropdownMenuSeparator />
 
-              <DropdownMenuItem>Verwijderen</DropdownMenuItem>
+              <AlertDialog>
+                <AlertDialogTrigger className="text-red-700 text-sm p-2 hover:bg-neutral-100 rounded w-full text-start">
+                  Verwijderen
+                </AlertDialogTrigger>
+
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Weet je het zeker?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Deze actie kan niet ongedaan worden
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction className="bg-red-700 hover:bg-red-800">
+                      <Link href={`producten/delete/${row.original.id}`}>
+                        Continue
+                      </Link>
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

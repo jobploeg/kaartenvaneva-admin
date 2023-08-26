@@ -11,6 +11,14 @@ export default async function Page({ params }) {
 
   return (
     <div>
+      <div className="fixed right-0 bottom-0 flex gap-5 mx-10">
+        <Link href={`/producten/${product.id}/edit`} className="">
+          <Button className="w-28 h-16 mb-1">Bewerken</Button>
+        </Link>
+        <Link href={"/producten"} className=" ">
+          <Button className="w-28 h-16 mb-1">Terug</Button>
+        </Link>
+      </div>
       <div className="md:flex md:m-32 m-5">
         <div className="md:w-1/2">
           <Image
@@ -25,6 +33,7 @@ export default async function Page({ params }) {
             className="rounded"
           />
         </div>
+
         <div className="md:w-1/2 flex flex-col md:gap-5 gap-3">
           <h1 className="text-4xl font-medium mt-10 md:mt-0">
             {product.title}
@@ -36,9 +45,6 @@ export default async function Page({ params }) {
           <p className="text-xl"> € {product.price.toFixed(2)}</p>
         </div>
       </div>
-      <Link href={"/producten"} className="flex justify-end mr-32">
-        <Button className="px-32 ">Terug</Button>
-      </Link>
     </div>
   );
 }

@@ -16,13 +16,15 @@ export async function OPTIONS() {
 }
 
 export async function POST(req: Request) {
-  const { productIds, quantity } = await req.json();
+  const { productIds, quantity, price } = await req.json();
 
   if (
     !productIds ||
     productIds.length === 0 ||
     !quantity ||
-    quantity.length === 0
+    quantity.length === 0 ||
+    !price ||
+    price.length === 0
   ) {
     return new NextResponse("Product ids are required", { status: 400 });
   }
@@ -50,13 +52,15 @@ export async function POST(req: Request) {
     });
   });
   const uuid = uuidv4();
-  console.log(uuid);
+  const products_names = data.map((item) => item.title).join(", ");
+
   const order = await supabase.from("orders").insert([
     {
       order_id: uuid,
-      products: productIds,
-      isPaid: false,
+      products_names: products_names,
+      isPaid: "false",
       isShipped: false,
+      total_price: price,
     },
   ]);
 

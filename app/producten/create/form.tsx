@@ -58,6 +58,7 @@ export default function ProfileForm({ categories }) {
     });
 
     setPictures(tempArr);
+    console.log(tempArr);
   };
 
   const saveImage = (pictures: any[]) => {

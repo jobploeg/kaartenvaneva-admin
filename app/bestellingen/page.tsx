@@ -5,7 +5,7 @@ import { DataTable } from "./data-table";
 async function getData(): Promise<Payment[]> {
   const { data, error } = await supabase
     .from("orders")
-    .select("id, products_names, total_price, isPaid, name, address");
+    .select("id, producten, prijs, status, naam, address");
 
   if (error) {
     throw error;
@@ -15,9 +15,13 @@ async function getData(): Promise<Payment[]> {
 
 export default async function DemoPage() {
   const data = await getData();
+  const dataLength = data.length;
 
   return (
-    <div className="container mx-auto py-10">
+    <div className="mx-5 py-10 md:px-16">
+      <div className="flex justify-between pb-5 md:-mt-2">
+        <h1 className="text-3xl font-semibold">Bestellingen ({dataLength})</h1>
+      </div>
       <DataTable columns={columns} data={data} />
     </div>
   );

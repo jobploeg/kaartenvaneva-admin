@@ -57,10 +57,10 @@ export async function POST(req: Request) {
   const order = await supabase.from("orders").insert([
     {
       order_id: uuid,
-      products_names: products_names,
-      isPaid: "false",
-      isShipped: false,
-      total_price: price,
+      producten: products_names,
+      status: "false",
+      verzonden: false,
+      prijs: price,
     },
   ]);
 

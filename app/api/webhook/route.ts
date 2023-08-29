@@ -41,10 +41,10 @@ export async function POST(req: Request) {
       .from("orders")
       .update([
         {
-          isPaid: "true",
+          status: "true",
           address: addressString,
           email: session?.customer_details?.email,
-          name: session?.customer_details?.name,
+          naam: session?.customer_details?.name,
         },
       ])
       .eq("order_id", session?.metadata?.orderId);
@@ -55,10 +55,10 @@ export async function POST(req: Request) {
       .from("orders")
       .update([
         {
-          isPaid: "failed",
+          status: "failed",
           address: addressString,
           email: session?.customer_details?.email,
-          name: session?.customer_details?.name,
+          naam: session?.customer_details?.name,
         },
       ])
       .eq("order_id", session?.metadata?.orderId);

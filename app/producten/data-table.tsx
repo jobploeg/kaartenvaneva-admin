@@ -74,10 +74,10 @@ export function DataTable<TData, TValue>({
         <Input
           placeholder="Filter op Categorie"
           value={
-            (table.getColumn("category")?.getFilterValue() as string) ?? ""
+            (table.getColumn("categories")?.getFilterValue() as string) ?? ""
           }
           onChange={(event) =>
-            table.getColumn("category")?.setFilterValue(event.target.value)
+            table.getColumn("categories")?.setFilterValue(event.target.value)
           }
           className="max-w-sm bg-white shadow-sm"
         />
@@ -91,6 +91,7 @@ export function DataTable<TData, TValue>({
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
+
               .map((column) => {
                 return (
                   <DropdownMenuCheckboxItem
@@ -108,7 +109,7 @@ export function DataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border bg-gray-50 shadow-sm">
+      <div className="rounded-md border shadow-sm">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

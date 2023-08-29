@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
           href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>🙃</text></svg>"
         ></link>
       </head>
-      <body>
+      <body className="bg-gray-50">
         <header className="h-16 w-screen  flex justify-between items-center md:px-10 px-5 border-b border-gray-400 mb-3">
           <div>
             <Link href={"/"} className="font-semibold text-xl hover:underline">
@@ -62,7 +62,7 @@ export default function RootLayout({ children }) {
             </DropdownMenu>
           </div>
         </header>
-        <main>
+        <main className="">
           {children}
           <Toaster />.
         </main>

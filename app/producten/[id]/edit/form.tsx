@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import { supabase } from "../../../../lib/supabaseClient";
 import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
+import Image from "next/image";
+import { cn } from "../../../../lib/utils";
 
 import {
   Select,
@@ -14,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../../components/ui/select";
-import { Button } from "../../../../components/ui/button";
+import { Button, buttonVariants } from "../../../../components/ui/button";
 import { Textarea } from "../../../../components/ui/textarea";
 import {
   Form,
@@ -59,6 +61,8 @@ export default function ProfileForm({ categories, product }) {
     setPictures(tempArr);
   };
 
+  const handleImageDelete = (image: any) => {};
+
   const saveImage = (pictures: any[]) => {
     pictures.forEach(
       async (picture: {
@@ -100,7 +104,7 @@ export default function ProfileForm({ categories, product }) {
     saveImage(pictures);
 
     // save the form data to supabase
-    const { data, error } = await supabase.from("products").insert([
+    const { data, error } = await supabase.from("products").update([
       {
         title: values.title,
         description: values.description,
@@ -118,7 +122,7 @@ export default function ProfileForm({ categories, product }) {
       form.reset();
     }
   }
-  console.log(categories);
+  const images = product[0].imageURLs;
 
   return (
     <Form {...form}>
@@ -171,22 +175,21 @@ export default function ProfileForm({ categories, product }) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Categorie</FormLabel>
+              <br />
               <FormControl>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
+                <select
+                  className={cn(
+                    buttonVariants({ variant: "outline" }),
+                    "w-[200px] appearance-none bg-transparent font-normal"
+                  )}
+                  {...field}
                 >
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder={field.value} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map((category: { id: any; name: string }) => (
-                      <SelectItem key={category.id} value={category.id}>
-                        {category.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                  {categories.map((category: { id: any; name: string }) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -211,10 +214,28 @@ export default function ProfileForm({ categories, product }) {
             </FormItem>
           )}
         />
+        <div className="border  w-fit p-5 rounded mt-5 border-input">
+          <FormLabel>Afbeelding verwijderen</FormLabel>
+          <div className="flex gap-7 pt-4">
+            {images.map((image: Key) => (
+              <Image
+                src={
+                  "https://izfokcthbvgcezxcusgh.supabase.co/storage/v1/object/public/images/" +
+                  image
+                }
+                alt={product.title}
+                width={450}
+                height={450}
+                key={image}
+                className=" w-32 h-32 border-input border hover:cursor-pointer"
+                // onClick={handleImageDelete(image)}
+              />
+            ))}
+          </div>
+        </div>
 
         <Button type="submit">Update</Button>
       </form>
-      {/* <ToastContainer /> */}
     </Form>
   );
 }

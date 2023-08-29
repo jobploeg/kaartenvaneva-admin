@@ -54,7 +54,10 @@ export const columns: ColumnDef<Products>[] = [
     cell: ({ row }) => {
       return (
         <div className="pl-3">
-          <Link href={`/producten/${row.original.id}`}>
+          <Link
+            href={`/producten/${row.original.id}`}
+            className="hover:underline"
+          >
             <p>{row.original.title}</p>
           </Link>
         </div>
@@ -78,7 +81,10 @@ export const columns: ColumnDef<Products>[] = [
     cell: ({ row }) => {
       return (
         <div className="pl-3">
-          <Link href={`/dashboard/producten/${row.original.id}`}>
+          <Link
+            href={`/dashboard/producten/${row.original.id}`}
+            className="hover:underline"
+          >
             <p>{row.original.categories.name}</p>
           </Link>
         </div>
@@ -108,7 +114,10 @@ export const columns: ColumnDef<Products>[] = [
 
       return (
         <div>
-          <Link href={`/producten/${row.original.id}`}>
+          <Link
+            href={`/producten/${row.original.id}`}
+            className="hover:underline"
+          >
             <p>{formatted}</p>
           </Link>
         </div>

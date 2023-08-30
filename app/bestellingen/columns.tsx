@@ -94,14 +94,14 @@ export const columns: ColumnDef<Payment>[] = [
     },
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("prijs"));
-      const formatted = "€ " + amount / 100;
+      const formatted = (amount / 100).toFixed(2);
 
       return (
         <Link
           href={`/bestellingen/${row.original.id}`}
           className="hover:underline"
         >
-          <p>{formatted}</p>
+          <p>€ {formatted}</p>
         </Link>
       );
     },

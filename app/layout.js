@@ -40,7 +40,7 @@ export default function RootLayout({ children }) {
               <Link href={"/producten"} className="hover:underline">
                 Producten
               </Link>
-              <Link href={"/categorieen"} className="hover:underline">
+              <Link href={"/categorie"} className="hover:underline">
                 categorieën
               </Link>
             </div>

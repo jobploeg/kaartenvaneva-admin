@@ -49,7 +49,7 @@ export default async function Page({ params }) {
 
   return (
     <div className="md:p-16 flex flex-col justify-center items-center mt-10 md:mt-0 ">
-      <div className="md:w-3/4 bg-white md:p-10 rounded-md mx-5">
+      <div className="md:w-3/4 bg-white md:p-10 shadow rounded-md mx-5">
         <Form categories={categories} product={product} />
       </div>
     </div>

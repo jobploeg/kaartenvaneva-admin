@@ -8,6 +8,8 @@ import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
 import { cn } from "../../../lib/utils";
 
+import Editor from "react-simple-wysiwyg";
+
 import {
   Select,
   SelectContent,
@@ -121,6 +123,12 @@ export default function ProfileForm({ categories }) {
     }
   }
 
+  const [html, setHtml] = useState("");
+
+  function onChange(e) {
+    setHtml(e.target.value);
+  }
+
   return (
     <Form {...form}>
       <form
@@ -147,7 +155,7 @@ export default function ProfileForm({ categories }) {
             <FormItem>
               <FormLabel>Beschrijving</FormLabel>
               <FormControl>
-                <Textarea placeholder="Beschrijving" required {...field} />
+                <Editor value={html} onChange={onChange} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

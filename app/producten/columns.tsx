@@ -26,6 +26,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../../components/ui/alert-dialog";
+import { supabase } from "../../lib/supabaseClient";
+import toast from "react-hot-toast";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -36,6 +38,17 @@ export type Products = {
   price: number;
 };
 
+async function deleteRow(id: string) {
+  const { error } = await supabase.from("products").delete().eq("id", id);
+
+  if (error) {
+    toast.error("Er is iets mis gegaan, probeer het later opnieuw");
+  }
+
+  if (!error) {
+    toast.success("Product verwijderd!");
+  }
+}
 export const columns: ColumnDef<Products>[] = [
   {
     accessorKey: "title",
@@ -169,9 +182,9 @@ export const columns: ColumnDef<Products>[] = [
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction className="bg-red-700 hover:bg-red-800">
-                      <Link href={`producten/delete/${row.original.id}`}>
-                        Continue
-                      </Link>
+                      <button onClick={() => deleteRow(row.original.id)}>
+                        Doorgaan
+                      </button>
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>

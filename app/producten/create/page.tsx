@@ -27,7 +27,6 @@ export default async function Page() {
       <div className="md:w-3/4 bg-white md:p-10 rounded-md mx-5 shadow">
         <Form categories={categories} />
       </div>
-      {/* <ToastContainer /> */}
     </div>
   );
 }

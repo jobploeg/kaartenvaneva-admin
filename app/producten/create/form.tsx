@@ -102,6 +102,9 @@ export default function ProfileForm({ categories }) {
       category: "",
       images: "",
     },
+    values: {
+      description: textHtml,
+    },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -113,7 +116,7 @@ export default function ProfileForm({ categories }) {
         title: values.title,
         description: values.description,
         price: values.price,
-        category: values.category,
+        category: values.category || "alle",
         imageURLs: pictures.map((picture: { url: string }) => picture.url),
       },
     ]);
@@ -154,6 +157,8 @@ export default function ProfileForm({ categories }) {
         setIsLoading(false);
       });
   };
+
+  console.log(textHtml);
 
   return (
     <Form {...form}>
@@ -200,7 +205,7 @@ export default function ProfileForm({ categories }) {
               <FormItem>
                 <FormLabel>Beschrijving</FormLabel>
                 <FormControl>
-                  <Editor value={textHtml} onChange={onChange} />
+                  <Editor value={textHtml} onChange={onChange} {...field} />
                   {/* <Textarea {...field} /> */}
                 </FormControl>
                 <FormMessage />

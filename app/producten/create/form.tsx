@@ -144,7 +144,7 @@ export default function ProfileForm({ categories }) {
     setIsLoading(true);
 
     const prompt =
-      "Schrijf een SEO-geoptimaliseerde beschrijving voor een e-commerce website. De website verkoopt handgetekende ansichtkaarten. Gebruik markup taal. Gebruik de volgende keywoorden: " +
+      "Schrijf een SEO-geoptimaliseerde beschrijving voor een product binnen een e-commerce website. De website verkoopt handgetekende ansichtkaarten. De beschrijving moet over het product gaan. Gebruik de volgende keywoorden:  " +
       tempPrompt;
 
     fetch("/api/ai", {
@@ -158,10 +158,11 @@ export default function ProfileForm({ categories }) {
     })
       .then((res) => res.text())
       .then((text) => {
-        setTextHtml(text);
+        const tempText = text.replace('"', "");
+        console.log(text);
+        setTextHtml(tempText);
         setIsLoading(false);
       });
-    console.log(prompt);
   };
 
   return (
@@ -190,7 +191,7 @@ export default function ProfileForm({ categories }) {
             <Input onChange={handlePromptChange} placeholder="Keywoorden" />
             <Button disabled={isLoading} onClick={handleSubmitPromptBtnClicked}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Genereren
+              genereren
             </Button>
           </div>
           <FormDescription>

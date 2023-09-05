@@ -41,7 +41,7 @@ export default function RootLayout({ children }) {
                 Producten
               </Link>
               <Link href={"/categorie"} className="hover:underline">
-                categorieën
+                Categorieën
               </Link>
             </div>
           </div>
@@ -62,7 +62,7 @@ export default function RootLayout({ children }) {
             </DropdownMenu>
           </div>
         </header>
-        <main className="">
+        <main>
           {children}
           <Toaster />.
         </main>

@@ -130,18 +130,23 @@ export default function ProfileForm({ categories }) {
     }
   }
 
-  const [prompt, setPrompt] = useState("");
+  const [tempPrompt, tempSetPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   function onChange(e) {
     setTextHtml(e.target.value);
   }
   const handlePromptChange = (e) => {
-    setPrompt(e.target.value);
+    tempSetPrompt(e.target.value);
   };
 
   const handleSubmitPromptBtnClicked = () => {
     setIsLoading(true);
+
+    const prompt =
+      "Schrijf een SEO-geoptimaliseerde beschrijving voor een e-commerce website. De website verkoopt handgetekende ansichtkaarten. Gebruik markup taal. Gebruik de volgende keywoorden: " +
+      tempPrompt;
+
     fetch("/api/ai", {
       method: "POST",
       headers: {
@@ -156,9 +161,8 @@ export default function ProfileForm({ categories }) {
         setTextHtml(text);
         setIsLoading(false);
       });
+    console.log(prompt);
   };
-
-  console.log(textHtml);
 
   return (
     <Form {...form}>
@@ -183,11 +187,7 @@ export default function ProfileForm({ categories }) {
         <FormItem>
           <FormLabel>Beschrijving genereren</FormLabel>
           <div className="flex flex-row gap-4">
-            <Input
-              value={prompt}
-              onChange={handlePromptChange}
-              placeholder="Keywoorden"
-            />
+            <Input onChange={handlePromptChange} placeholder="Keywoorden" />
             <Button disabled={isLoading} onClick={handleSubmitPromptBtnClicked}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Genereren

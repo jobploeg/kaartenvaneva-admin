@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import { cn } from "../../../lib/utils";
 
 import Editor from "react-simple-wysiwyg";
+import { Loader2 } from "lucide-react";
 
 import {
   Select,
@@ -26,6 +27,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "../../../components/ui/form";
 import { Input } from "../../../components/ui/input";
 import { Key, useState } from "react";
@@ -42,6 +44,8 @@ const formSchema = z.object({
 });
 
 export default function ProfileForm({ categories }) {
+  const [textHtml, setTextHtml] = useState("null");
+
   const [pictures, setPictures] = useState<any>([
     {
       data: [],
@@ -93,7 +97,7 @@ export default function ProfileForm({ categories }) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      description: "",
+      description: textHtml,
       price: "",
       category: "",
       images: "",
@@ -123,11 +127,33 @@ export default function ProfileForm({ categories }) {
     }
   }
 
-  const [html, setHtml] = useState("");
+  const [prompt, setPrompt] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   function onChange(e) {
-    setHtml(e.target.value);
+    setTextHtml(e.target.value);
   }
+  const handlePromptChange = (e) => {
+    setPrompt(e.target.value);
+  };
+
+  const handleSubmitPromptBtnClicked = () => {
+    setIsLoading(true);
+    fetch("/api/ai", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        prompt: prompt,
+      }),
+    })
+      .then((res) => res.text())
+      .then((text) => {
+        setTextHtml(text);
+        setIsLoading(false);
+      });
+  };
 
   return (
     <Form {...form}>
@@ -148,19 +174,40 @@ export default function ProfileForm({ categories }) {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Beschrijving</FormLabel>
-              <FormControl>
-                <Editor value={html} onChange={onChange} {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+
+        <FormItem>
+          <FormLabel>Beschrijving genereren</FormLabel>
+          <div className="flex flex-row gap-4">
+            <Input
+              value={prompt}
+              onChange={handlePromptChange}
+              placeholder="Keywoorden"
+            />
+            <Button disabled={isLoading} onClick={handleSubmitPromptBtnClicked}>
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Genereren
+            </Button>
+          </div>
+          <FormDescription>
+            *Geef woorden die het product omschrijven
+          </FormDescription>
+        </FormItem>
+        {textHtml != "null" && (
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Beschrijving</FormLabel>
+                <FormControl>
+                  <Editor value={textHtml} onChange={onChange} />
+                  {/* <Textarea {...field} /> */}
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
         <FormField
           control={form.control}
           name="price"

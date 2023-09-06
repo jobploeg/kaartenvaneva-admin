@@ -5,6 +5,10 @@ import { NextResponse } from "next/server";
 import { supabase } from "../../../lib/supabaseClient";
 import { stripe } from "../../../lib/stripe";
 import { metadata } from "../../layout";
+import { Resend } from "resend";
+import { EmailTemplate } from "../../../components/email/email_template";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   const body = await req.text();
@@ -37,6 +41,15 @@ export async function POST(req: Request) {
   const addressString = addressComponents.filter((c) => c !== null).join(", ");
 
   if (event.type === "checkout.session.completed") {
+    const firstName = session?.customer_details?.name;
+
+    await resend.emails.send({
+      from: "onboarding@resend.dev",
+      to: ["job.vanderploeg@gmail.com"],
+      subject: "Bestelling geslaagd!",
+      react: EmailTemplate({ firstName }),
+    });
+
     const order = await supabase
       .from("orders")
       .update([
@@ -48,6 +61,9 @@ export async function POST(req: Request) {
         },
       ])
       .eq("order_id", session?.metadata?.orderId);
+
+    //send email with conformation and order details
+    //make call to api/send route
   }
 
   if (event.type === "checkout.session.failed") {

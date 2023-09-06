@@ -73,6 +73,7 @@ export async function POST(req: Request) {
     cancel_url: `${process.env.NEXT_PUBLIC_URL}/betaald?canceled=1`,
     metadata: {
       orderId: uuid,
+      products: products_names,
     },
     // shipping_address_collection: {
     //   allowed_countries: ["NL", "BE"],

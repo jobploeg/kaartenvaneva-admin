@@ -61,7 +61,7 @@ export const ReceiptMail = ({ name, address, products }) => (
           </Text>
           <Text className="text-black mb-10 text-lg">
             Mocht er iets niet kloppen, neem gerust
-            <Link href="mailto:test.test@test.com"> contact</Link> op!
+            <Link href="mailto:kaartenvaneva@gmail.com"> contact</Link> op!
           </Text>
         </Container>
         <Container>

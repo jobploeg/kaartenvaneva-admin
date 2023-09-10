@@ -28,7 +28,6 @@ export async function POST(req: Request) {
 
   const session = event.data.object as Stripe.Checkout.Session;
   const address = session?.customer_details?.address;
-  console.log(session);
 
   const addressComponents = [
     address?.line1,
@@ -87,6 +86,7 @@ export async function POST(req: Request) {
         },
       ])
       .eq("order_id", session?.metadata?.orderId);
+    console.log(order);
   }
 
   return new NextResponse(null, { status: 200 });

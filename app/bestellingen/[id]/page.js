@@ -7,13 +7,21 @@ export default async function Page({ params }) {
   const orders = await getOrders(params.id);
   const order = orders[0];
 
+  console.log(order);
+
+  //fetch products with order.producten from supabase
+
   return (
-    <div className="flex flex-col p-32">
-      <p>{order?.naam}</p>
-      <p>{order?.address}</p>
-      <p>{order?.prijs}</p>
-      <p>{order?.status}</p>
-      <p>{order?.producten}</p>
+    <div className="">
+      <div>
+        <h1 className="text-2xl">Bestelling #{order.id}</h1>
+      </div>
+      <div>
+        <h1 className="text-2xl">Bestelde producten</h1>
+      </div>
+      <div></div>
+      <div></div>
+      <div></div>
     </div>
   );
 }

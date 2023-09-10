@@ -1,9 +1,9 @@
 import Stripe from "stripe";
 import { NextResponse } from "next/server";
-import { v4 as uuidv4 } from "uuid";
 
 import { stripe } from "../../../lib/stripe";
 import { supabase } from "../../../lib/supabaseClient";
+import { v4 as uuidv4 } from "uuid";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -38,6 +38,8 @@ export async function POST(req: Request) {
     throw error;
   }
 
+  let products = [];
+
   const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
   data.forEach((product) => {
     line_items.push({
@@ -50,19 +52,27 @@ export async function POST(req: Request) {
         unit_amount: product.price * 100,
       },
     });
+    products.push({
+      id: product.id,
+      name: product.title,
+      quantity: quantity[product.id],
+    });
   });
+
   const uuid = uuidv4();
-  const products_names = data.map((item) => item.title).join(", ");
 
   const order = await supabase.from("orders").insert([
     {
       order_id: uuid,
-      producten: products_names,
+      producten: products,
       status: "false",
       verzonden: false,
       prijs: price,
     },
   ]);
+
+  const productNames = products.map((product) => product.name);
+  const productsString = productNames.join(", ");
 
   const session = await stripe.checkout.sessions.create({
     line_items,
@@ -72,8 +82,8 @@ export async function POST(req: Request) {
     success_url: `${process.env.NEXT_PUBLIC_URL}/betaald?success=1`,
     cancel_url: `${process.env.NEXT_PUBLIC_URL}/betaald?canceled=1`,
     metadata: {
+      products: productsString,
       orderId: uuid,
-      products: products_names,
     },
     // shipping_address_collection: {
     //   allowed_countries: ["NL", "BE"],

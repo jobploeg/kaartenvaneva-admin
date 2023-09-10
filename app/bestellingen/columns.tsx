@@ -40,12 +40,18 @@ export const columns: ColumnDef<Payment>[] = [
     accessorKey: "producten",
     header: "Producten",
     cell: ({ row }) => {
+      const products = row.original.producten;
+      const tempProducts = JSON.parse(products);
+
+      const productNames = tempProducts.map((product) => product.name);
+      const productsString = productNames.join(", ");
+
       return (
         <Link
           href={`/bestellingen/${row.original.id}`}
           className="hover:underline"
         >
-          <p>{row.original.producten}</p>
+          <p>{productsString}</p>
         </Link>
       );
     },

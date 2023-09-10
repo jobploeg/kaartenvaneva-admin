@@ -33,6 +33,7 @@ export type Payment = {
   status: "true" | "false" | "failed";
   naam: string;
   address: string;
+  created_at: string;
 };
 
 export const columns: ColumnDef<Payment>[] = [
@@ -84,8 +85,36 @@ export const columns: ColumnDef<Payment>[] = [
       );
     },
   },
+  // {
+  //   accessorKey: "prijs",
+  //   header: ({ column }) => {
+  //     return (
+  //       <Button
+  //         variant="ghost"
+  //         className="-ml-4"
+  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //       >
+  //         Prijs
+  //         <ArrowUpDown className="h-4 w-4" />
+  //       </Button>
+  //     );
+  //   },
+  //   cell: ({ row }) => {
+  //     const amount = parseFloat(row.getValue("prijs"));
+  //     const formatted = (amount / 100).toFixed(2);
+
+  //     return (
+  //       <Link
+  //         href={`/bestellingen/${row.original.id}`}
+  //         className="hover:underline"
+  //       >
+  //         <p>€ {formatted}</p>
+  //       </Link>
+  //     );
+  //   },
+  // },
   {
-    accessorKey: "prijs",
+    accessorKey: "created_at",
     header: ({ column }) => {
       return (
         <Button
@@ -93,21 +122,32 @@ export const columns: ColumnDef<Payment>[] = [
           className="-ml-4"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Prijs
+          Besteldatum
           <ArrowUpDown className="h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("prijs"));
-      const formatted = (amount / 100).toFixed(2);
+      const isoTimestamp = row.original.created_at;
+      console.log(row.original.id);
+
+      // Create a Date object from the ISO timestamp
+      const dateObject = new Date(isoTimestamp);
+
+      // Get the various date and time components
+      const year = dateObject.getFullYear();
+      const month = (dateObject.getMonth() + 1).toString().padStart(2, "0"); // Adding 1 to the month because months are zero-based
+      const day = dateObject.getDate().toString().padStart(2, "0");
+
+      // Create a readable timestamp
+      const readableTimestamp = `${day}-${month}-${year}`;
 
       return (
         <Link
           href={`/bestellingen/${row.original.id}`}
           className="hover:underline"
         >
-          <p>€ {formatted}</p>
+          <p>{readableTimestamp}</p>
         </Link>
       );
     },
@@ -165,6 +205,7 @@ export const columns: ColumnDef<Payment>[] = [
       }
     },
   },
+
   {
     id: "actions",
     cell: ({ row }) => {

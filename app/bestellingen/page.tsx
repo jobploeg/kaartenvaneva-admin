@@ -5,7 +5,7 @@ import { DataTable } from "./data-table";
 async function getData(): Promise<Payment[]> {
   const { data, error } = await supabase
     .from("orders")
-    .select("id, producten, prijs, status, naam, address");
+    .select("id, producten, prijs, status, naam, address, created_at");
 
   if (error) {
     throw error;

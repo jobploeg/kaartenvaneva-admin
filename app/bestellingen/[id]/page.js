@@ -52,6 +52,15 @@ export default async function Page({ params }) {
     const product = tempProducten.find((product) => product.id === id);
     return product ? product.quantity : null;
   }
+  let status;
+
+  if (order.status === "true") {
+    status = <p className="text-green-700 font-semibold">Betaald</p>;
+  } else if (order.status === "false") {
+    status = <p className="text-orange-600 font-semibold">Nog niet betaald</p>;
+  } else if (order.status === "failed") {
+    status = <p className="text-red-700 font-semibold">Mislukt</p>;
+  }
 
   return (
     <div className="mx-5 py-10 md:px-16">
@@ -59,12 +68,13 @@ export default async function Page({ params }) {
         <h1 className="text-4xl">Bestelling #{order.id}</h1>
         <p>{time}</p>
       </div>
-      <div>
-        <h1 className="text-2xl mt-10">Bestelde producten</h1>
+      <h1 className="text-2xl mt-10 mb-4 font-semibold">Bestelde producten</h1>
+
+      <div className="flex gap-5 flex-wrap ">
         {products.map((product) => (
           <div
             key={product.id}
-            className="mb-5 flex gap-2 flex-row  border rounded border-black p-4"
+            className="mb-5 flex gap-2 flex-row  border rounded border-black p-4 w-auto"
           >
             <div className="mt-1 mr-7">
               <Image
@@ -98,9 +108,30 @@ export default async function Page({ params }) {
           </div>
         ))}
       </div>
-      <div></div>
-      <div></div>
-      <div></div>
+      <h1 className="text-2xl mb-4 mt-10 font-semibold">Klant informatie</h1>
+
+      <div className=" flex gap-5 flex-wrap">
+        <div className="mb-5 flex gap-2 flex-col  border rounded border-black p-4 w-auto">
+          <p>{order.naam}</p>
+          <p>{order.email}</p>
+        </div>
+        <div className="mb-5 flex gap-2 flex-col  border rounded border-black p-4 w-auto">
+          <p className="font-semibold">Verzendadres:</p>
+          <p>{order.address}</p>
+        </div>
+        <div className="mb-5 flex gap-2 flex-col  border rounded border-black py-4 pl-4 md:pr-20">
+          <p className="font-semibold">Status:</p>
+          <p>{status}</p>
+        </div>
+        <div className="mb-5 flex gap-2 flex-col  border rounded border-black p-4 w-auto">
+          <p className="font-semibold">Verzonden:</p>
+          {order.verzonden ? (
+            <p className="text-green-700 font-semibold">Verzonden</p>
+          ) : (
+            <p className="text-red-700 font-semibold ">Nog niet verzonden</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

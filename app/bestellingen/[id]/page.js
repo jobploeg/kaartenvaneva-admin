@@ -33,6 +33,7 @@ function getTime(time) {
 
   // Create a readable timestamp
   const readableTimestamp = `${day}-${month}-${year} ${hours}:${minutes}`;
+  return readableTimestamp;
 }
 
 export default async function Page({ params }) {
@@ -45,18 +46,21 @@ export default async function Page({ params }) {
   const products = await getProducts(productIds);
   const time = getTime(order.created_at);
 
-  console.log(products);
+  const tempProducten = JSON.parse(order.producten);
 
-  //fetch products with order.producten from supabase
+  function getQuantityById(id) {
+    const product = tempProducten.find((product) => product.id === id);
+    return product ? product.quantity : null;
+  }
 
   return (
-    <div className="">
+    <div className="mx-5 py-10 md:px-16">
       <div>
-        <h1 className="text-2xl">Bestelling #{order.id}</h1>
+        <h1 className="text-4xl">Bestelling #{order.id}</h1>
         <p>{time}</p>
       </div>
       <div>
-        <h1 className="text-2xl">Bestelde producten</h1>
+        <h1 className="text-2xl mt-10">Bestelde producten</h1>
         {products.map((product) => (
           <div
             key={product.id}
@@ -75,18 +79,20 @@ export default async function Page({ params }) {
                 className="object-cover bg-center rounded w-48 h-32"
               />
             </div>
-            <div className="md:pr-10 ">
-              <Link href={`/producten/${product.id}`}>
-                <h1 className="text-2xl mb-1 hover:underline">
-                  {product.title}
-                </h1>
-              </Link>
-              <p className="text-lg font-semibold mb-1">
-                € {product.price.toFixed(2)}
-              </p>
-              <p className="text-lg font-semibold mb-1">
-                Aantal: {order.producten}
-              </p>
+            <div className="md:pr-10 flex justify-between flex-col">
+              <div>
+                <Link href={`/producten/${product.id}`}>
+                  <h1 className="text-2xl mb-1 hover:underline">
+                    {product.title}
+                  </h1>
+                </Link>
+                <p className="text-lg  mb-1">€ {product.price.toFixed(2)}</p>
+              </div>
+              <div>
+                <p className="text-xl font-semibold mb-1">
+                  Aantal: {getQuantityById(product.id)}
+                </p>
+              </div>
             </div>
             <hr />
           </div>

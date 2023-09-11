@@ -3,6 +3,18 @@ import Image from "next/image";
 import { Button } from "../../../components/ui/button";
 import Link from "next/link";
 import { supabase } from "../../../lib/supabaseClient";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../../../components/ui/alert-dialog";
+import UpdateStatus from "../../../components/updateStatus";
 
 async function getProducts(ids) {
   const { data, error } = await supabase
@@ -64,11 +76,36 @@ export default async function Page({ params }) {
 
   return (
     <div className="mx-5 py-10 md:px-16">
-      <div>
-        <h1 className="text-4xl">Bestelling #{order.id}</h1>
-        <p>{time}</p>
+      <div className="flex justify-between">
+        <div>
+          <h1 className="text-4xl">Bestelling #{order.id}</h1>
+          <p>{time}</p>
+        </div>
+        <div>
+          {/* <Button className="text-xl p-8 mt-3">Verzenden</Button> */}
+          <AlertDialog>
+            <AlertDialogTrigger className="bg-black text-white text-xl rounded-md hover:bg-gray-900 p-5  w-full text-start">
+              Bestelling verzenden
+            </AlertDialogTrigger>
+
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Weet je het zeker?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Met deze actie krijgt de klant een bestelling confirmatie mail
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction>
+                  <UpdateStatus id={params.id} />
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
       </div>
-      <h1 className="text-2xl mt-10 mb-4 font-semibold">Bestelde producten</h1>
+      <h1 className="text-2xl mt-32 mb-4 font-semibold">Bestelde producten</h1>
 
       <div className="flex gap-5 flex-wrap ">
         {products.map((product) => (

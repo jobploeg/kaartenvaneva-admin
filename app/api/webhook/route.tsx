@@ -8,7 +8,7 @@ import { metadata } from "../../layout";
 import { Resend } from "resend";
 import { ReceiptMail } from "../../../emails/receiptMail";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   const body = await req.text();
@@ -47,16 +47,16 @@ export async function POST(req: Request) {
     const products = session?.metadata?.products;
 
     //send comfirmation email
-    await resend.emails.send({
-      from: "onboarding@resend.dev",
-      to: [email],
-      subject: "Bestelling geslaagd!",
-      react: ReceiptMail({
-        name: firstName,
-        address: address,
-        products: products,
-      }),
-    });
+    // await resend.emails.send({
+    //   from: "onboarding@resend.dev",
+    //   to: [email],
+    //   subject: "Bestelling geslaagd!",
+    //   react: ReceiptMail({
+    //     name: firstName,
+    //     address: address,
+    //     products: products,
+    //   }),
+    // });
 
     const order = await supabase
       .from("orders")

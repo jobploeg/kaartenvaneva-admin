@@ -98,7 +98,7 @@ export default async function Page({ params }) {
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction>
-                  <UpdateStatus id={params.id} />
+                  <UpdateStatus id={params.id} email={order.email} />
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
